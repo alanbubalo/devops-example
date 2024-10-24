@@ -35,7 +35,13 @@ jobs:
       run: python run-report.py --config-json-path $CONFIG_JSON_PATH
 
     - name: Commit Changes
-      run: git add . && git commit -m "Generate report"
+      run: | 
+        git config --local user.email "alanbuba5@gmail.com"
+        git config --local user.name "Alan Bubalo"
+        git add . && git commit -m "Generate report"
 
     - name: Push Changes
-      run: git push
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
