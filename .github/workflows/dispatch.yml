@@ -15,3 +15,21 @@ jobs:
       run: echo "Hello World"
     - name: Environment variables
       run: echo "$CURRENT_DATE"
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+    - name: List directories
+      run: ls -al
+    - name: List Environment Variables
+      run: env
+    - name: List Processes
+      run: ps aux
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+    - with:
+        python-version: '3.12'
+    - name: Install Requirements
+      run: pip install -r requirements.txt
+    - name: Generate Report
+      run: python run-report.py
