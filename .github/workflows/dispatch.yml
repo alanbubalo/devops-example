@@ -3,6 +3,9 @@ name: Workflow dispatch
 on:
   workflow_dispatch:
 
+env:
+  CURRENT_DATE: '2024-10-24'
+
 jobs:
   run:
     name: Hello World
@@ -10,3 +13,5 @@ jobs:
     steps:
     - name: Hello World
       run: echo "Hello World"
+    - name: Environment variables
+      run: echo "$CURRENT_DATE"
