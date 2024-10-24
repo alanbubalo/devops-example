@@ -1,0 +1,41 @@
+name: Scheduled Scraper
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * *
+
+env:
+  CONFIG_JSON_PATH: /Users/korisnik/Documents/ci-sample-1.0.2/config.json
+  REPOSITORY_IO_PATH: /Users/korisnik/Documents/ci-sample-1.0.2/data
+
+jobs:
+  run:
+    name: "Run price_scraper"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install price_scraper
+      run: pip install git+https://github.com/andhrelja/price_scraper
+    
+    - name: Run price_scraper
+      run: pip install -r requirements.txt
+    
+    - name: Generate Report
+      run: python run-report.py --config-json-path $CONFIG_JSON_PATH
+
+    - name: Commit Changes
+      run: git add . && git commit -m "Generate report"
+
+    - name: Push Changes
+      run: git push
